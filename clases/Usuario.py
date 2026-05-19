@@ -199,3 +199,44 @@ class Usuario:
         print(f"Descuentos    : ${descuento}")
         print(f"Total a pagar : ${valor_final}")
         print("Estado actual de su membresía ahora es: Activa")
+
+class Afiliado(Usuario):
+    """
+    Clase que representa a un usuario afiliado del gimnasio FitUdeA.
+    Hereda de Usuario y agrega funcionalidades propias del perfil afiliado.
+    """
+
+    def __init__(self, id=0, nombre="N.A.", tipo_documento="N.A.", num_documento="N.A.",
+                 fecha_nacimiento="N.A.", correo="N.A.", telefono=0, estrato=0,
+                 tipo_afiliacion=0, estado_membresia=0, contrasena="N.A."):
+        super().__init__(id, nombre, tipo_documento, num_documento, fecha_nacimiento,
+                         correo, telefono, estrato, tipo_afiliacion, estado_membresia,
+                         contrasena, perfil="Afiliado")
+        self.historial_pagos = []      # arreglo de pagos realizados
+        self.historial_reservas = []   # arreglo de reservas realizadas
+        self.rutinas_asignadas = []    # arreglo de rutinas asignadas
+    # R5: Consultar historial de pagos
+    def consultar_historial_pagos(self) -> None:
+        """
+        Muestra en pantalla el historial de pagos realizados por el afiliado.
+        """
+        print("\n=== Historial de Pagos ===")
+        if len(self.historial_pagos) == 0:
+            print("No hay pagos registrados.")
+        else:
+            for i in range(len(self.historial_pagos)):
+                print(f"\nPago #{i + 1}")
+                print(self.historial_pagos[i])
+    # R6:Consultar las rutinas de entrenamiento asignadas. 
+    def consultar_rutinas(self)->None:
+        """ Muestra en pantalla las rutinas asignadas para el usuario afiliado """
+        print("\n=== Rutinas asignadas ===")
+        if len(self.rutinas_asignadas)==0:
+            print("No hay rutinas asignadas.")
+        else: 
+            for i in range(len(self.rutinas_asignadas)):
+                print(f"\nRutina #{i+1}")
+                print(self.rutinas_asignadas[i])
+    # R7: Consultar la programación semanal de clases grupales.
+    
+
