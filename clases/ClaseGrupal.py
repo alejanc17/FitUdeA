@@ -44,6 +44,16 @@ class Clase_Grupal:
         print("El cupo máximo para esta clase es de", self.cupo_maximo)
         print("La cantidad de usuarios inscritos para esta clase es de ", self.cant_usuarios_inscritos, "usuarios")
         
+    # R12: Consultar la lista de usuarios inscritos en una clase grupal
+    def mostrar_inscritos(self) -> None:
+        print("\n=== Usuarios inscritos ===")
+        if len(self.usuarios_inscritos) == 0:
+            print("No hay usuarios inscritos.")
+        else:
+            for i in range(len(self.usuarios_inscritos)):
+                print(f"\nUsuario #{i+1}")
+                print(self.usuarios_inscritos[i].nombre)
+
 
 
 
