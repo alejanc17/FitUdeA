@@ -238,5 +238,13 @@ class Afiliado(Usuario):
                 print(f"\nRutina #{i+1}")
                 print(self.rutinas_asignadas[i])
     # R7: Consultar la programación semanal de clases grupales.
-    
+    def consultar_clases_grupales(self,clases)->None:
+        print("\n=== Clases grupales ===")
+        if len(clases)==0:
+            print("No hay clases grupales")
+        else:
+            for i in range(len(clases)):
+                print(f"\nClase grupal #{i+1}")
+                clases[i].mostrar_clase_grupal()
+
 
