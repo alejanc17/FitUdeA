@@ -248,3 +248,22 @@ class Afiliado(Usuario):
                 clases[i].mostrar_clase_grupal()
 
 
+class Entrenador(Usuario):
+    # Atributo exclusivo del entrenador
+    areas_especialidad: str
+
+    def __init__(self, id=0, nombre="N.A.", tipo_documento="N.A.", num_documento=0,
+                 fecha_nacimiento="N.A.", correo="N.A.", telefono=0, estrato=0,
+                 tipo_afiliacion=0, estado_membresia=0, contrasena="N.A.",
+                 areas_especialidad="N.A."):
+        super().__init__(id, nombre, tipo_documento, num_documento, fecha_nacimiento,
+                         correo, telefono, estrato, tipo_afiliacion, estado_membresia,
+                         contrasena, "Entrenador")
+        
+        self.areas_especialidad = areas_especialidad
+
+    def crear_rutina(self):
+        pass
+
+    def consultar_agenda(self):
+        pass
