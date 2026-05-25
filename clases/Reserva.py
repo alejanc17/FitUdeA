@@ -1,3 +1,4 @@
+
 class Reserva:
     """
     Clase que representa una reserva de clase grupal en el gimnasio FitUdeA.
@@ -12,14 +13,22 @@ class Reserva:
         self.fecha = fecha
         self.hora = hora
         self.estado = estado
-
+    
+    #R8: Reservar un cupo en una clase grupal
+    def registrar_reserva(self)->None:
+        self.id=int(input("Ingresa el id de la reserva:"))
+        self.fecha=input("Ingrese la fecha de la reserva:")
+        self.hora=input("Ingrese la hora de reserva:")
+        self.estado= "activa"
+        print("Rerseva registrada exitosamente.")
+    #R9:Cancelar una reserva de clase grupal.
     def cambiar_estado_cancelada(self) -> None:
         """
         Cambia el estado de la reserva a cancelada.
         """
         self.estado = "cancelada"
         print("La reserva ha sido cancelada exitosamente.")
-
+    # R10: Consultar el historial de reservas.
     def mostrar_reserva(self)->None:
         """
         Este método muestra los detalles de la reserva.
@@ -30,11 +39,4 @@ class Reserva:
         print("La hora de la reserva es", self.hora)
         print("El estado de la reserva es", self.estado)
 
-    #R8:Reservar un cupo en una clase grupal
-    def registrar_reserva(self)->None:
-        self.id=int(input("Ingresa el id de la reserva:"))
-        self.fecha=input("Ingrese la fecha de la reserva:")
-        self.hora=input("Ingrese la hora de reserva:")
-        self.estado= "activa"
-        print("Rerseva registrada exitosamente.")
 
