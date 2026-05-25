@@ -1,3 +1,4 @@
+import numpy as np
 class Clase_Grupal:
     id:int
     nombre:str
@@ -7,6 +8,7 @@ class Clase_Grupal:
     duracion: int
     cupo_maximo: int
     cant_usuarios_inscritos: int
+    usuarios_inscritos = np.ndarray 
     
     def __init__(self,id=0, nombre="N.A.", descripcion="N.A.", fecha="N.A.", hora="N.A.", duracion=0,cupo_maximo=0,cant_usuarios_inscritos=0):
         self.id=id
@@ -17,15 +19,29 @@ class Clase_Grupal:
         self.duracion= duracion
         self.cupo_maximo= cupo_maximo
         self.cant_usuarios_inscritos= cant_usuarios_inscritos
-        self.usuarios_inscritos = []  # arreglo de usuarios inscritos
+        self.usuarios_inscritos = np.empty(0, dtype=object) # arreglo de usuarios inscritos
 
-    def sumar_inscritos(self, usuario)->None:
-        self.usuarios_inscritos.append(usuario)
-        self.cant_usuarios_inscritos+=1
+    def sumar_inscrito(self, usuario) -> None:
+        copia = self.usuarios_inscritos.copy()
+        nuevo_arreglo = np.empty(len(copia) + 1, dtype=object)
+        for i in range(len(copia)):
+            nuevo_arreglo[i] = copia[i]
+            nuevo_arreglo[len(copia)] = usuario
+            self.usuarios_inscritos = nuevo_arreglo
+            self.cant_usuarios_inscritos += 1
+            self.cant_usuarios_inscritos -= 1
 
-    def restar_inscrito(self,usuario)->None:
-        self.usuarios_inscritos.remove(usuario)
-        self.cant_usuarios_inscritos-=1
+    def restar_inscrito(self, usuario) -> None:
+        copia = self.usuarios_inscritos.copy()
+        nuevo_arreglo = np.empty(len(copia) - 1, dtype=object)
+        j = 0
+        for i in range(len(copia)):
+            if copia[i] != usuario:
+                nuevo_arreglo[j] = copia[i]
+                j += 1
+        self.usuarios_inscritos = nuevo_arreglo
+        self.cant_usuarios_inscritos -= 1
+
 
     def validar_cupo_disponible(self)->bool:
         if(self.cant_usuarios_inscritos < self.cupo_maximo):

@@ -21,5 +21,19 @@ class Pago:
         print("El saldo de vigencia es", self.saldo_vigencia)
         print("El valor cancelado fue de", self.valor_cancelado)
 
-    def calcular_descuento(self, tipo_plan, tipo_afiliacion, estrato, edad )->float:
-        pass
+    def calcular_descuento(self, tipo_plan, tipo_afiliacion, estrato, edad, valor_base )->float:
+        #Plan anual → 25% de descuento
+        #Docente o egresado mayor de 50 años → 10% adicional
+        #Estudiante estrato 1 o 2 → 15% de descuento
+
+        descuento= 0.0
+        if tipo_plan == "anual":
+            descuento += valor_base * 12 * 0.25
+
+        if (tipo_afiliacion == 2 or tipo_afiliacion == 3) and edad > 50:
+            descuento += valor_base * 0.10
+
+        if tipo_afiliacion == 1 and (estrato == 1 or estrato == 2):
+            descuento += valor_base * 0.15
+
+        return descuento

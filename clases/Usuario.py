@@ -1,4 +1,5 @@
 
+import numpy as np
 class Usuario:
     """
     Clase que representa y gestiona la información de los usuarios del gimnasio FitUdeA.
@@ -11,14 +12,17 @@ class Usuario:
     correo: str
     telefono: int
     estrato: int
-    tipo_afiliacion: int
-    estado_membresia: int
     contrasena: str
-    perfil: str
+    tipo_usuario: int
+
+    # CONSTANTES
+    ADMINISTRADOR=1 
+    ENTRENADOR=2
+    AFILIADO=3
+
 
     def __init__(self, id=0, nombre="N.A.", tipo_documento="N.A.", num_documento="N.A.",
-                 fecha_nacimiento="N.A.", correo="N.A.", telefono=0, estrato=0,
-                 tipo_afiliacion=0, estado_membresia=0, contrasena="N.A.", perfil="N.A."):
+                 fecha_nacimiento="N.A.", correo="N.A.", telefono=0, estrato=0, contrasena="N.A.", tipo_usuario="N.A."):
         """
         Método constructor que inicializa los atributos del objeto Usuario.
         PARAM:
@@ -43,10 +47,8 @@ class Usuario:
         self.correo = correo
         self.telefono = telefono
         self.estrato = estrato
-        self.tipo_afiliacion = tipo_afiliacion
-        self.estado_membresia = estado_membresia
         self.contrasena = contrasena
-        self.perfil = perfil
+        self.tipo_usuario = tipo_usuario
 
     def pedir_datos(self) -> None:
         """
@@ -59,10 +61,8 @@ class Usuario:
         self.correo = input("Ingrese el correo electronico: ")
         self.telefono = int(input("Ingrese el numero de telefono: "))
         self.estrato = int(input("Ingrese su estrato (1-6): "))
-        self.tipo_afiliacion = int(input("Tipo de afiliado (1.estudiante, 2.docente, 3.egresado, 4.particular): "))
-        self.estado_membresia = int(input("Estado de membresia (1.activa, 2.inactiva): "))
         self.contrasena = input("Ingrese la contrasena: ")
-        self.perfil = input("Ingrese el perfil: ")
+        self.tipo_usuario = int(input("Ingrese el tipo de usuario \n1. ADMINISTRADOR \n2.ENTRENADOR \n3.AFILIADO. "))
 
     def mostrar_datos(self) -> None:
         """
@@ -75,9 +75,7 @@ class Usuario:
         print("El correo electronico es:", self.correo)
         print("El numero de telefono es:", self.telefono)
         print("El estrato es:", self.estrato)
-        print("El tipo de afiliacion es:", self.tipo_afiliacion)
-        print("El estado de la membresia es:", self.estado_membresia)
-        print("El perfil es:", self.perfil)
+        print("El  es tipo de usuario es:", self.tipo_usuario)
 
     # R1: Autenticar usuario
     def autenticar(self, correo_ingresado: str, contrasena_ingresada: str) -> bool:
@@ -206,14 +204,37 @@ class Afiliado(Usuario):
     Hereda de Usuario y agrega funcionalidades propias del perfil afiliado.
     """
 
-    def __init__(self, id=0, nombre="N.A.", tipo_documento="N.A.", num_documento="N.A.",
-                 fecha_nacimiento="N.A.", correo="N.A.", telefono=0, estrato=0,
-                 tipo_afiliacion=0, estado_membresia=0, contrasena="N.A."):
+    tipo_afiliación: int 
+    tipo_plan: int 
+    fecha_de_inicio: str 
+    fecha_de_vencimiento: str 
+    estado_de_membresia: str 
+    rutinas_asignadas: np.ndarray     
+    #CONSTANTES
+    ESTUDIANTE= 1
+    EGRESADO= 2
+    DOCENTE= 3
+    PARTICULAR = 4
+    MENSUAL= 1
+    ANUAL= 2
+    ACTIVA= 1
+    INACTIVA= 2
+
+
+
+    def __init__(self, nombre="N.A.", tipo_documento=0, num_documento=0, fecha_nacimiento="N.A.",
+                         correo="N.A.", telefono="N.A.", tipo_afiliacion=0, tipo_plan=0, fecha_de_inicio="N.A.", fecha_de_vencimiento="N.A.",
+                 estado_de_membresia=0):
         super().__init__(id, nombre, tipo_documento, num_documento, fecha_nacimiento,
-                         correo, telefono, estrato, tipo_afiliacion, estado_membresia,
-                         contrasena, perfil="Afiliado")
-        self.historial_pagos = []      # arreglo de pagos realizados
-        self.historial_reservas = []   # arreglo de reservas realizadas
+                         correo, telefono,estrato=0,
+                         contrasena="N.A.", tipo_usuario=3)
+
+        self.tipo_afiliación= tipo_afiliacion
+        self.tipo_plan= tipo_plan
+        self.fecha_de_inicio= fecha_de_inicio
+        self.fecha_de_vencimiento= fecha_de_vencimiento
+        self.estado_de_membresia=estado_de_membresia
+    
         self.rutinas_asignadas = []    # arreglo de rutinas asignadas
     # R5: Consultar historial de pagos
     def consultar_historial_pagos(self) -> None:
