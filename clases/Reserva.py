@@ -29,3 +29,12 @@ class Reserva:
         print("La fecha de la reserva es", self.fecha)
         print("La hora de la reserva es", self.hora)
         print("El estado de la reserva es", self.estado)
+
+    #R8:Reservar un cupo en una clase grupal
+    def registrar_reserva(self)->None:
+        self.id=int(input("Ingresa el id de la reserva:"))
+        self.fecha=input("Ingrese la fecha de la reserva:")
+        self.hora=input("Ingrese la hora de reserva:")
+        self.estado= "activa"
+        print("Rerseva registrada exitosamente.")
+

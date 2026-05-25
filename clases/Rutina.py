@@ -1,5 +1,5 @@
+# Clase hecha por Manuela (lista)
 import numpy as np
-
 class Rutina:
     id: int
     nombre: str

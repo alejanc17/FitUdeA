@@ -1,3 +1,4 @@
+# Clase hecha por Manuela (lista)
 import numpy as np
 class Pago:
     id: int
