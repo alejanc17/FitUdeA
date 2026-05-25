@@ -26,10 +26,9 @@ class Clase_Grupal:
         nuevo_arreglo = np.empty(len(copia) + 1, dtype=object)
         for i in range(len(copia)):
             nuevo_arreglo[i] = copia[i]
-            nuevo_arreglo[len(copia)] = usuario
-            self.usuarios_inscritos = nuevo_arreglo
-            self.cant_usuarios_inscritos += 1
-            self.cant_usuarios_inscritos -= 1
+        nuevo_arreglo[len(copia)] = usuario
+        self.usuarios_inscritos = nuevo_arreglo
+        self.cant_usuarios_inscritos += 1
 
     def restar_inscrito(self, usuario) -> None:
         copia = self.usuarios_inscritos.copy()

@@ -1,3 +1,4 @@
+import numpy as np
 class Pago:
     id: int
     fecha : str
@@ -11,6 +12,7 @@ class Pago:
         self.concepto= concepto
         self.saldo_vigencia=saldo_vigencia
         self.valor_cancelado= valor_cancelado
+        self.valores_afiliacion = np.empty(4, dtype=float)
 
     def mostrar_pago(self)->None:
         """ Muestra en pantalla los detalles del pago"""
@@ -37,3 +39,13 @@ class Pago:
             descuento += valor_base * 0.15
 
         return descuento
+    #R18 Actualizar_valor_afiliacion
+    def actualizar_valor_afiliacion(self) -> None:
+        tipos = np.array(["Estudiante", "Egresado", "Docente", "Particular"])
+        for i in range(len(tipos)):
+            print(f"{i+1}. {tipos[i]}: ${self.valores_afiliacion[i]}")
+    
+        opcion = int(input("Ingrese el tipo de afiliado a modificar (1-4): "))
+        nuevo_valor = float(input("Ingrese el nuevo valor mensual: "))
+        self.valores_afiliacion[opcion - 1] = nuevo_valor
+        print("Valor actualizado exitosamente.")
