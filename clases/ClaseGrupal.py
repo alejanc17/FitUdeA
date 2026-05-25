@@ -21,6 +21,52 @@ class Clase_Grupal:
         self.cant_usuarios_inscritos= cant_usuarios_inscritos
         self.usuarios_inscritos = np.empty(0, dtype=object) # arreglo de usuarios inscritos
 
+    #R15: Registrar una una clase grupal 
+    def registrar_clase_grupal(self)->None:
+        """Este método permite al administrador registrar una nueva clase"""
+        self.id=int(input("Ingrese el id de la clase:"))
+        self.nombre= input("Ingrese el nombre de la clase grupal:")
+        self.descripcion=input("Ingrese una breve descripción de esta clase grupal:")
+        self.fecha=input("Ingrese la fecha de la clase grupal en formato dia/mes/año :")
+        self.hora=input("Ingrese la hora de la clase grupal en formato HH-MM-SS:")
+        self.duracion=int(input("Ingrese la duración de la clase en minutos:"))
+        self.cupo_maximo=int(input("Ingrese el cupo máximo que tendrá esta clase grupal :"))
+        print("Clase registrada exitosamente.")
+
+    #R16 Modificar una clase grupal
+    def modificar_clase_grupal(self)->None:
+
+        """Este método permite al administrador modificar los datos de una clase existente"""
+        self.mostrar_clase_grupal()
+        
+        opcion= 0
+        while (opcion!=7):
+            print("\n===Seleccione una opción a modificar===")
+            opcion=int(input("\n Ingresa una opción \n1.nombre \n2.descripción \n3.fecha \n4.hora \n5.duración \n.6 cupo máximo " \
+            "\n7. salir"))
+            match opcion:
+                case 1:
+                    self.nombre=input("Ingresa el nuevo nombre:")
+                    print("Nuevo nombre guardado exitosamente.")
+                case 2:
+                    self.descripcion=input("Ingresa la nueva descripción:")
+                    print("Descripción guardada exitosamente.")
+                case 3: 
+                    self.fecha=input("Ingrese la nueva fecha en el formato dd/mm/aaaa:")
+                    print("Fecha guardada exitosamente.")
+                case 4:
+                    self.hora=input("Ingrese la nueva hora en formato HH-MM-SS: ")
+                    print("Hora guardada exitosamente")
+                case 5:
+                    self.duracion= int(input("Ingrese la duración en minutos"))
+                    print("La duración ha sido guardada correctamente.")
+                case 6: 
+                    self.cupo_maximo=int(input("Ingrese el nuevo cupo máximo:"))
+                    print("El cupo máximo ha sido guardado correctamente.")
+                case 7:
+                    print("Saliendo")
+
+
     def sumar_inscrito(self, usuario) -> None:
         copia = self.usuarios_inscritos.copy()
         nuevo_arreglo = np.empty(len(copia) + 1, dtype=object)
