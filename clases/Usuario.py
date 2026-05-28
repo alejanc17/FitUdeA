@@ -204,7 +204,7 @@ class Afiliado(Usuario):
     Hereda de Usuario y agrega funcionalidades propias del perfil afiliado.
     """
 
-    tipo_afiliación: int 
+    tipo_afiliacion: int 
     tipo_plan: int 
     fecha_de_inicio: str 
     fecha_de_vencimiento: str 
@@ -229,7 +229,7 @@ class Afiliado(Usuario):
                          correo, telefono,estrato=0,
                          contrasena="N.A.", tipo_usuario=3)
 
-        self.tipo_afiliación= tipo_afiliacion
+        self.tipo_afiliacion= tipo_afiliacion
         self.tipo_plan= tipo_plan
         self.fecha_de_inicio= fecha_de_inicio
         self.fecha_de_vencimiento= fecha_de_vencimiento
