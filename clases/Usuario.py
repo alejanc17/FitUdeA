@@ -234,8 +234,9 @@ class Afiliado(Usuario):
         self.fecha_de_inicio= fecha_de_inicio
         self.fecha_de_vencimiento= fecha_de_vencimiento
         self.estado_de_membresia=estado_de_membresia
-    
-        self.rutinas_asignadas = []    # arreglo de rutinas asignadas
+        self.historial_pagos = []    # arreglo de historial de pagos
+        self.historial_reservas = [] # arreglo de historial de reservas
+        self.rutinas_asignadas =  [] # arreglo de rutinas asignadas
     # R5: Consultar historial de pagos
     def consultar_historial_pagos(self) -> None:
         """
@@ -248,6 +249,7 @@ class Afiliado(Usuario):
             for i in range(len(self.historial_pagos)):
                 print(f"\nPago #{i + 1}")
                 print(self.historial_pagos[i])
+
     # R6:Consultar las rutinas de entrenamiento asignadas. 
     def consultar_rutinas(self)->None:
         """ Muestra en pantalla las rutinas asignadas para el usuario afiliado """
@@ -270,16 +272,13 @@ class Afiliado(Usuario):
 
 
 class Entrenador(Usuario):
-    # Atributo exclusivo del entrenador
     areas_especialidad: str
 
     def __init__(self, id=0, nombre="N.A.", tipo_documento="N.A.", num_documento=0,
                  fecha_nacimiento="N.A.", correo="N.A.", telefono=0, estrato=0,
-                 tipo_afiliacion=0, estado_membresia=0, contrasena="N.A.",
-                 areas_especialidad="N.A."):
+                 contrasena="N.A.", areas_especialidad="N.A."):
         super().__init__(id, nombre, tipo_documento, num_documento, fecha_nacimiento,
-                         correo, telefono, estrato, tipo_afiliacion, estado_membresia,
-                         contrasena, "Entrenador")
+                         correo, telefono, estrato, contrasena, tipo_usuario=2)
         
         self.areas_especialidad = areas_especialidad
 

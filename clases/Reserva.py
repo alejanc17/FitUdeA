@@ -1,4 +1,4 @@
-
+#lista
 class Reserva:
     """
     Clase que representa una reserva de clase grupal en el gimnasio FitUdeA.
