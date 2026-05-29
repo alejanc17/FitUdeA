@@ -8,7 +8,7 @@ from clases.Reserva import Reserva
 
 class App():
     """
-    Clase orquestadora principal que gestiona el menú iterativo de la aplicación.
+    Clase orquestadora principal que gestiona el menú iterativo de la aplicación FitUdeA.
     """
 
     # Constantes
@@ -23,13 +23,18 @@ class App():
     ARCHIVO_RUTINAS = "datos_rutinas.npy"
     ARCHIVO_PAGOS = "datos_pagos.npy"
     ARCHIVO_RESERVAS = "datos_reservas.npy"
+    ARCHIVO_VALORES = "datos_valores.npy"
 
     def __init__(self):
+        """
+        Constructor que carga los datos almacenados en los archivos al iniciar la app.
+        """
         self.usuarios, self.cont_usuarios = self.cargar_datos(self.ARCHIVO_USUARIOS, self.MAX_USUARIOS)
         self.clases, self.cont_clases = self.cargar_datos(self.ARCHIVO_CLASES, self.MAX_CLASES)
         self.rutinas, self.cont_rutinas = self.cargar_datos(self.ARCHIVO_RUTINAS, self.MAX_RUTINAS)
         self.pagos, self.cont_pagos = self.cargar_datos(self.ARCHIVO_PAGOS, self.MAX_PAGOS)
         self.reservas, self.cont_reservas = self.cargar_datos(self.ARCHIVO_RESERVAS, self.MAX_RESERVAS)
+        self.valores, self.cont_valores = self.cargar_datos(self.ARCHIVO_VALORES, 4)
 
     def cargar_datos(self, archivo: str, num_max_datos: int) -> tuple:
         """
@@ -42,7 +47,7 @@ class App():
         try:
             arreglo_de_datos = np.load(archivo, allow_pickle=True)
             i = 0
-            while (arreglo_de_datos[i] != None):
+            while arreglo_de_datos[i] != None:
                 i += 1
             return arreglo_de_datos, i
         except (FileNotFoundError, EOFError):
@@ -65,103 +70,224 @@ class App():
             print(f"Error: no se pudieron guardar los datos en {archivo}.")
             return False
 
-    def principal(self) -> None:
+    def registrar_usuario(self) -> None:
         """
-        Método que controla el ciclo de repetición del menú principal.
+        Registra un nuevo usuario en el sistema según su tipo.
         """
-        afiliado = Afiliado()
-        entrenador = Entrenador()
-        clase = Clase_Grupal()
-        rutina = Rutina()
-        pago = Pago()
-        reserva = Reserva()
+        print("\n=== Registro de Usuario ===")
+        tipo = int(input("Tipo de usuario \n1. Administrador \n2. Entrenador \n3. Afiliado: "))
 
+        if tipo == Usuario.AFILIADO:
+            usu = Afiliado()
+        elif tipo == Usuario.ENTRENADOR:
+            usu = Entrenador()
+        else:
+            usu = Usuario()
+
+        usu.pedir_datos()
+        self.usuarios[self.cont_usuarios] = usu
+        self.cont_usuarios += 1
+
+        if self.guardar_datos(self.usuarios, self.ARCHIVO_USUARIOS):
+            print("Usuario registrado exitosamente.")
+        else:
+            print("Error al guardar el usuario.")
+
+    def autenticar_usuario(self):
+        """
+        Autentica un usuario verificando su correo y contraseña.
+        RETURN: objeto Usuario si se autenticó, None si no.
+        """
+        print("\n=== Autenticación ===")
+        correo = input("Correo electronico: ")
+        contrasena = input("Contraseña: ")
+
+        for i in range(self.cont_usuarios):
+            if self.usuarios[i].correo == correo and self.usuarios[i].contrasena == contrasena:
+                print(f"Bienvenido, {self.usuarios[i].nombre}!")
+                return self.usuarios[i]
+
+        print("Correo o contraseña incorrectos.")
+        return None
+    def registrar_reserva(self, reserva) -> None:
+        reserva.registrar_reserva()
+        self.reservas[self.cont_reservas] = reserva
+        self.cont_reservas += 1
+        self.guardar_datos(self.reservas, self.ARCHIVO_RESERVAS)
+
+    def registrar_rutina(self, rutina) -> None:
+        rutina.crear_rutina()
+        self.rutinas[self.cont_rutinas] = rutina
+        self.cont_rutinas += 1
+        self.guardar_datos(self.rutinas, self.ARCHIVO_RUTINAS)
+    def registrar_clase(self, clase) -> None:
+        clase.registrar_clase_grupal()
+        self.clases[self.cont_clases] = clase
+        self.cont_clases += 1
+        self.guardar_datos(self.clases, self.ARCHIVO_CLASES)
+
+    def menu_afiliado(self, afiliado: Afiliado) -> None:
+        """
+        Muestra el menú del afiliado y gestiona sus opciones.
+        PARAM:
+            afiliado (Afiliado): objeto del afiliado autenticado.
+        """
+        reserva = Reserva()
         opcion = 0
 
-        while (opcion != 21):
+        while opcion != 10:
             print("\n" + "="*30)
-            print("MENÚ DE USUARIO - FITUDEA")
+            print("MENÚ AFILIADO - FITUDEA")
             print("="*30)
-            print("\n1. Pedir datos")
-            print("\n2. Iniciar sesión")
-            print("\n3. Consultar información personal")
-            print("\n4. Actualizar datos de contacto")
-            print("\n5. Registrar pago de membresía")
-            print("\n6. Consultar historial de pagos")
-            print("\n7. Consultar las rutinas de entrenamiento asignadas.")
-            print("\n8. Consultar la programación semanal de clases grupales.")
-            print("\n9. Reservar un cupo en una clase grupal.")
-            print("\n10. Cancelar una reserva de clase grupal.")
-            print("\n11. Consultar el historial de reservas.")
-            print("\n12. Consultar agenda semanal de clases asignadas.")
-            print("\n13. Consultar la lista de usuarios inscritos en una clase grupal.")
-            print("\n14. Crear una rutina de entrenamiento.")
-            print("\n15. Consultar usuarios asignados a una rutina.")
-            print("\n16. Registrar una nueva clase grupal.")
-            print("\n17. Modificar la información de una clase grupal.")
-            print("\n18. Actualizar el estado o vigencia de un plan de membresía.")
-            print("\n19. Actualizar el valor mensual de los tipos de afiliación.")
-            print("\n20. Generar reportes estadísticos del gimnasio.")
-            print("\n21. Salir")
+            print("\n1. Consultar información personal")
+            print("\n2. Actualizar datos de contacto")
+            print("\n3. Registrar pago de membresía")
+            print("\n4. Consultar historial de pagos")
+            print("\n5. Consultar rutinas asignadas")
+            print("\n6. Consultar clases grupales")
+            print("\n7. Reservar una clase grupal")
+            print("\n8. Cancelar una reserva")
+            print("\n9. Consultar historial de reservas")
+            print("\n10. Cerrar sesión")
 
             opcion = int(input("\nElije una opción: "))
 
-            match (opcion):
+            match opcion:
                 case 1:
-                    afiliado.pedir_datos()
-                    self.usuarios[self.cont_usuarios] = afiliado
-                    self.cont_usuarios += 1
-                    self.guardar_datos(self.usuarios, self.ARCHIVO_USUARIOS)
-                case 2:
-                    afiliado.iniciar_sesion()
-                case 3:
                     afiliado.consultar_informacion()
-                case 4:
+                case 2:
                     afiliado.actualizar_contacto()
-                case 5:
+                    self.guardar_datos(self.usuarios, self.ARCHIVO_USUARIOS)
+                case 3:
                     afiliado.registrar_pago()
-                case 6:
+                    self.guardar_datos(self.usuarios, self.ARCHIVO_USUARIOS)
+                case 4:
                     afiliado.consultar_historial_pagos()
-                case 7:
+                case 5:
                     afiliado.consultar_rutinas()
-                case 8:
+                case 6:
                     afiliado.consultar_clases_grupales(self.clases[:self.cont_clases])
-                case 9:
+                case 7:
                     reserva.registrar_reserva()
-                    self.reservas[self.cont_reservas] = reserva
-                    self.cont_reservas += 1
-                    self.guardar_datos(self.reservas, self.ARCHIVO_RESERVAS)
-                case 10:
+                    
+                case 8:
                     reserva.cambiar_estado_cancelada()
-                case 11:
+                case 9:
                     reserva.mostrar_reserva()
-                case 12:
+                case 10:
+                    print("\nCerrando sesión...")
+                case _:
+                    print("\nOpción no válida.")
+
+    def menu_entrenador(self, entrenador: Entrenador) -> None:
+        """
+        Muestra el menú del entrenador y gestiona sus opciones.
+        PARAM:
+            entrenador (Entrenador): objeto del entrenador autenticado.
+        """
+        rutina = Rutina()
+        clase = Clase_Grupal()
+        opcion = 0
+
+        while opcion != 5:
+            print("\n" + "="*30)
+            print("MENÚ ENTRENADOR - FITUDEA")
+            print("="*30)
+            print("\n1. Consultar agenda semanal")
+            print("\n2. Consultar usuarios inscritos en una clase")
+            print("\n3. Crear rutina de entrenamiento")
+            print("\n4. Consultar usuarios asignados a una rutina")
+            print("\n5. Cerrar sesión")
+
+            opcion = int(input("\nElije una opción: "))
+
+            match opcion:
+                case 1:
                     pass
-                case 13:
+                case 2:
                     clase.mostrar_inscritos()
-                case 14:
+                case 3:
                     rutina.crear_rutina()
-                    self.rutinas[self.cont_rutinas] = rutina
-                    self.cont_rutinas += 1
-                    self.guardar_datos(self.rutinas, self.ARCHIVO_RUTINAS)
-                case 15:
+                case 4:
                     rutina.consultar_usuarios_asignados()
-                case 16:
+                case 5:
+                    print("\nCerrando sesión...")
+                case _:
+                    print("\nOpción no válida.")
+
+    def menu_administrador(self, admin: Usuario) -> None:
+        """
+        Muestra el menú del administrador y gestiona sus opciones.
+        PARAM:
+            admin (Usuario): objeto del administrador autenticado.
+        """
+        clase = Clase_Grupal()
+        pago = Pago()
+        opcion = 0
+
+        while opcion != 7:
+            print("\n" + "="*30)
+            print("MENÚ ADMINISTRADOR - FITUDEA")
+            print("="*30)
+            print("\n1. Registrar nueva clase grupal")
+            print("\n2. Modificar información de una clase grupal")
+            print("\n3. Actualizar estado de membresía")
+            print("\n4. Actualizar valor de afiliación")
+            print("\n5. Generar reportes estadísticos")
+            print("\n6. Crear cuenta entrenador/administrador")
+            print("\n7. Cerrar sesión")
+
+            opcion = int(input("\nElije una opción: "))
+
+            match opcion:
+                case 1:
                     clase.registrar_clase_grupal()
-                    self.clases[self.cont_clases] = clase
-                    self.cont_clases += 1
-                    self.guardar_datos(self.clases, self.ARCHIVO_CLASES)
-                case 17:
+                case 2:
                     clase.modificar_clase_grupal()
                     self.guardar_datos(self.clases, self.ARCHIVO_CLASES)
-                case 18:
+                case 3:
                     pass
-                case 19:
+                case 4:
                     pago.actualizar_valor_afiliacion()
-                case 20:
+                    self.guardar_datos(pago.valores_afiliacion, self.ARCHIVO_VALORES)
+                case 5:
                     pass
-                case 21:
-                    print("\nSaliendo del sistema. ¡Gracias por usar FitUdeA!")
+                case 6:
+                    self.registrar_usuario()
+                case 7:
+                    print("\nCerrando sesión...")
+                case _:
+                    print("\nOpción no válida.")
+
+    def principal(self) -> None:
+        """
+        Método principal que gestiona el menú de inicio de la aplicación.
+        """
+        opcion = 0
+        while opcion != 3:
+            print("\n" + "="*30)
+            print("FITUDEA - MENÚ PRINCIPAL")
+            print("="*30)
+            print("\n1. Registrarse")
+            print("\n2. Autenticarse")
+            print("\n3. Salir")
+
+            opcion = int(input("\nElije una opción: "))
+
+            match opcion:
+                case 1:
+                    self.registrar_usuario()
+                case 2:
+                    usuario = self.autenticar_usuario()
+                    if usuario != None:
+                        if usuario.tipo_usuario == Usuario.AFILIADO:
+                            self.menu_afiliado(usuario)
+                        elif usuario.tipo_usuario == Usuario.ENTRENADOR:
+                            self.menu_entrenador(usuario)
+                        elif usuario.tipo_usuario == Usuario.ADMINISTRADOR:
+                            self.menu_administrador(usuario)
+                case 3:
+                    print("\nHasta luego!")
                 case _:
                     print("\nOpción no válida.")
 

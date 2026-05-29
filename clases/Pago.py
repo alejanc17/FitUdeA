@@ -60,7 +60,7 @@ class Pago:
     def actualizar_valor_afiliacion(self) -> None:
         tipos = np.array(["Estudiante", "Egresado", "Docente", "Particular"])
         for i in range(len(tipos)):
-            print(f"{i+1}. {tipos[i]} ${self.valores_afiliacion[i]}")
+            print(f" # {i+1}. {tipos[i]} ${self.valores_afiliacion[i]}")
     
         opcion = int(input("Ingrese el tipo de afiliado a modificar (1-4): "))
         nuevo_valor = float(input("Ingrese el nuevo valor mensual: "))

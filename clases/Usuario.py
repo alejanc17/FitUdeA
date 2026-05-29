@@ -145,9 +145,12 @@ class Afiliado(Usuario):
     def __init__(self, id=0, nombre="N.A.", tipo_documento="N.A.", num_documento=0,
                  fecha_nacimiento="N.A.", correo="N.A.", telefono=0, estrato=0,
                  contrasena="N.A.", tipo_afiliacion=0, tipo_plan=0,
-                 fecha_de_inicio="N.A.", fecha_de_vencimiento="N.A.", estado_de_membresia=0):
+                 fecha_de_inicio="N.A.", fecha_de_vencimiento="N.A.",
+                 estado_de_membresia=1):
         """
         Constructor de Afiliado. Llama al constructor de Usuario y agrega atributos propios.
+        PARAM:
+            estado_de_membresia (int): Por defecto 1 (Activa).
         """
         super().__init__(id, nombre, tipo_documento, num_documento, fecha_nacimiento,
                          correo, telefono, estrato, contrasena, tipo_usuario=3)
@@ -156,9 +159,9 @@ class Afiliado(Usuario):
         self.fecha_de_inicio = fecha_de_inicio
         self.fecha_de_vencimiento = fecha_de_vencimiento
         self.estado_de_membresia = estado_de_membresia
-        self.historial_pagos = []
-        self.historial_reservas = []
-        self.rutinas_asignadas = []
+        self.historial_pagos = np.empty(0, dtype=object)
+        self.historial_reservas = np.empty(0, dtype=object)
+        self.rutinas_asignadas = np.empty(0, dtype=object)
 
     def pedir_datos(self) -> None:
         """
@@ -169,7 +172,7 @@ class Afiliado(Usuario):
         self.tipo_plan = int(input("Tipo de plan (1.Mensual, 2.Anual): "))
         self.fecha_de_inicio = input("Fecha de inicio del plan (dia/mes/anno): ")
         self.fecha_de_vencimiento = input("Fecha de vencimiento del plan (dia/mes/anno): ")
-        self.estado_de_membresia = int(input("Estado de membresia (1.Activa, 2.Inactiva): "))
+        self.estado_de_membresia = 1  # siempre activa al registrarse
 
     # R2: Consultar informacion personal y estado de membresia
     def consultar_informacion(self) -> None:
@@ -219,7 +222,14 @@ class Afiliado(Usuario):
             valor_total = valor_base
 
         pago.valor_cancelado = valor_total - descuento
-        self.historial_pagos.append(pago)
+
+        copia = self.historial_pagos.copy()
+        nuevo_arreglo = np.empty(len(copia) + 1, dtype=object)
+        for i in range(len(copia)):
+            nuevo_arreglo[i] = copia[i]
+        nuevo_arreglo[len(copia)] = pago
+        self.historial_pagos = nuevo_arreglo
+
         self.estado_de_membresia = 1
 
         print("\n¡Pago registrado exitosamente!")
