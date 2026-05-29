@@ -172,7 +172,7 @@ class Afiliado(Usuario):
         self.tipo_plan = int(input("Tipo de plan (1.Mensual, 2.Anual): "))
         self.fecha_de_inicio = input("Fecha de inicio del plan (dia/mes/anno): ")
         self.fecha_de_vencimiento = input("Fecha de vencimiento del plan (dia/mes/anno): ")
-        self.estado_de_membresia = 1  # siempre activa al registrarse
+        self.estado_de_membresia = 1 
 
     # R2: Consultar informacion personal y estado de membresia
     def consultar_informacion(self) -> None:
