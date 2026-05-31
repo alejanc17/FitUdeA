@@ -227,7 +227,7 @@ class App():
 
             match opcion:
                 case 1:
-                    pass
+                    entrenador.consultar_agenda(self.clases[:self.cont_clases])
                 case 2:
                     clase.mostrar_inscritos()
                 case 3:

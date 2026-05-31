@@ -297,8 +297,22 @@ class Entrenador(Usuario):
                          correo, telefono, estrato, contrasena, tipo_usuario=2)
         self.areas_especialidad = areas_especialidad
 
-    def crear_rutina(self):
-        pass
-
-    def consultar_agenda(self):
-        pass
+    def consultar_agenda(self, clases) -> None:
+        """
+        R11: Muestra las clases grupales asignadas al entrenador actual.
+        PARAM:
+            clases: arreglo de objetos Clase_Grupal.
+        """
+        print(f"\n=== Agenda Semanal de {self.nombre} ===")
+        tiene_clases = False
+        
+        for i in range(len(clases)):
+            
+            if clases[i].entrenador != None and clases[i].entrenador.num_documento == self.num_documento:
+                print(f"\n--- Clase asignada ---")
+                
+                clases[i].mostrar_clase_grupal() 
+                tiene_clases = True
+                
+        if tiene_clases == False:
+            print("No tienes clases grupales asignadas para esta semana.")
