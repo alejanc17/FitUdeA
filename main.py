@@ -35,6 +35,7 @@ class App():
         self.pagos, self.cont_pagos = self.cargar_datos(self.ARCHIVO_PAGOS, self.MAX_PAGOS)
         self.reservas, self.cont_reservas = self.cargar_datos(self.ARCHIVO_RESERVAS, self.MAX_RESERVAS)
         self.valores, self.cont_valores = self.cargar_datos(self.ARCHIVO_VALORES, 4)
+        self.usuario_autenticado = None
 
     def cargar_datos(self, archivo: str, num_max_datos: int) -> tuple:
         """
@@ -93,22 +94,30 @@ class App():
         else:
             print("Error al guardar el usuario.")
 
-    def autenticar_usuario(self):
+    def autenticar_usuario(self) -> bool:
         """
-        Autentica un usuario verificando su correo y contraseña.
-        RETURN: objeto Usuario si se autenticó, None si no.
+        Autentica un usuario verificando su número de documento y contraseña.
+        RETURN: True si se autenticó correctamente, False si no.
         """
         print("\n=== Autenticación ===")
-        correo = input("Correo electronico: ")
-        contrasena = input("Contraseña: ")
+        num_doc = int(input("Ingrese el número de documento del usuario: "))
+        pas = input("Ingrese la contraseña del usuario: ")
 
         for i in range(self.cont_usuarios):
-            if self.usuarios[i].correo == correo and self.usuarios[i].contrasena == contrasena:
-                print(f"Bienvenido, {self.usuarios[i].nombre}!")
-                return self.usuarios[i]
+            if (self.usuarios[i].num_documento == num_doc):
 
-        print("Correo o contraseña incorrectos.")
-        return None
+                if (self.usuarios[i].contrasena == pas):
+                    # Corregido: usuarios (en plural)
+                    self.usuario_autenticado = self.usuarios[i] 
+                    print(f"Bienvenido, {self.usuarios[i].nombre}!")
+                    return True
+                else:
+                    input("La contraseña ingresada no coincide. Presione enter para continuar")
+                    return False
+        
+        input(f"El usuario con documento {num_doc} no está registrado. Presione enter para continuar")
+        return False
+    
     def registrar_reserva(self, reserva) -> None:
         reserva.registrar_reserva()
         self.reservas[self.cont_reservas] = reserva
@@ -175,6 +184,7 @@ class App():
                 case 9:
                     reserva.mostrar_reserva()
                 case 10:
+                    self.usuario_autenticado = None
                     print("\nCerrando sesión...")
                 case _:
                     print("\nOpción no válida.")
@@ -211,6 +221,7 @@ class App():
                 case 4:
                     rutina.consultar_usuarios_asignados()
                 case 5:
+                    self.usuario_autenticado = None
                     print("\nCerrando sesión...")
                 case _:
                     print("\nOpción no válida.")
@@ -255,6 +266,7 @@ class App():
                 case 6:
                     self.registrar_usuario()
                 case 7:
+                    self.usuario_autenticado = None
                     print("\nCerrando sesión...")
                 case _:
                     print("\nOpción no válida.")
@@ -278,14 +290,17 @@ class App():
                 case 1:
                     self.registrar_usuario()
                 case 2:
-                    usuario = self.autenticar_usuario()
-                    if usuario != None:
-                        if usuario.tipo_usuario == Usuario.AFILIADO:
-                            self.menu_afiliado(usuario)
-                        elif usuario.tipo_usuario == Usuario.ENTRENADOR:
-                            self.menu_entrenador(usuario)
-                        elif usuario.tipo_usuario == Usuario.ADMINISTRADOR:
-                            self.menu_administrador(usuario)
+                    # Si la autenticación retorna True, evaluamos la sesión
+                    if self.autenticar_usuario():
+                        if self.usuario_autenticado.tipo_usuario == Usuario.AFILIADO:
+                            self.menu_afiliado(self.usuario_autenticado)
+
+                        elif self.usuario_autenticado.tipo_usuario == Usuario.ENTRENADOR:
+                            self.menu_entrenador(self.usuario_autenticado)
+                        
+                        elif self.usuario_autenticado.tipo_usuario == Usuario.ADMINISTRADOR:
+                            self.menu_administrador(self.usuario_autenticado)
+
                 case 3:
                     print("\nHasta luego!")
                 case _:
