@@ -257,7 +257,7 @@ class App():
                     clase.modificar_clase_grupal()
                     self.guardar_datos(self.clases, self.ARCHIVO_CLASES)
                 case 3:
-                    pass
+                    self.actualizar_membresia()
                 case 4:
                     pago.actualizar_valor_afiliacion()
                     self.guardar_datos(pago.valores_afiliacion, self.ARCHIVO_VALORES)
@@ -305,6 +305,39 @@ class App():
                     print("\nHasta luego!")
                 case _:
                     print("\nOpción no válida.")
+
+    def actualizar_membresia(self) -> None:
+        """
+        R17: Permite al administrador buscar un afiliado por documento
+        y modificar su estado de membresía o fecha de vencimiento.
+        """
+
+        print("\n=== Actualizar Membresía ===")
+        doc_buscar = int(input("Ingrese el número de documento del afiliado: "))
+        afiliado_encontrado = None
+
+        for i in range(self.cont_usuarios):
+            if self.usuarios[i].num_documento == doc_buscar and self.usuarios[i].tipo_usuario == Usuario.AFILIADO:
+                afiliado_encontrado = self.usuarios[i]
+                break
+        
+        if afiliado_encontrado != None:
+            while True:
+                nuevo_estado = input("Ingrese el nuevo estado (1. Activa / 2. Inactiva / 3. Vencida) o presione Enter para omitir: ")
+
+                if nuevo_estado == "":
+                    break
+                elif nuevo_estado == "1" or nuevo_estado == "2" or nuevo_estado == "3":
+                    afiliado_encontrado.estado_de_membresia = int(nuevo_estado)
+                else:
+                    print("¡Error! Opción no válida. Desbe ingresar 1, 2 o 3. \n")
+            
+            nueva_fecha = input("INgrese la nueva fecha de vencimiento (día/mes/año) o presione ENTER para omitir: ")
+            if nueva_fecha != "":
+                afiliado_encontrado.fecha_de_vencimiento = nueva_fecha
+            
+            self.guardar_datos(self.usuarios, self.ARCHIVO_USUARIOS)
+            print("\nMembresía actualizada exitosamente.")
 
 if __name__ == "__main__":
     mi_app = App()
