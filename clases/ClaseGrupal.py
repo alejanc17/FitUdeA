@@ -11,10 +11,11 @@ class Clase_Grupal:
     cant_usuarios_inscritos: int
     usuarios_inscritos = np.ndarray 
     
-    def __init__(self,id=0, nombre="N.A.", descripcion="N.A.", fecha="N.A.", hora="N.A.", duracion=0,cupo_maximo=0,cant_usuarios_inscritos=0):
+    def __init__(self,id=0, nombre="N.A.", descripcion="N.A.", entrenador=None, fecha="N.A.", hora="N.A.", duracion=0,cupo_maximo=0,cant_usuarios_inscritos=0):
         self.id=id
         self.nombre=nombre
         self.descripcion=descripcion
+        self.entrenador = entrenador
         self.fecha= fecha
         self.hora= hora
         self.duracion= duracion
@@ -100,6 +101,12 @@ class Clase_Grupal:
         print("El id de la clase es", self.id)
         print("El nombre de la clase es", self.nombre)
         print("Descripción de la clase", self.descripcion)
+
+        if self.entrenador != None:
+            print("Entrenador asignado: ", self.entrenador.nombre)
+        else:
+            print("Entrenador asignado: Por definir")
+            
         print("La fecha de la clase es", self.fecha)
         print("La hora de clase", self.hora)
         print("La duración de la clase es", self.duracion)
