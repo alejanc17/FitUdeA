@@ -60,7 +60,7 @@ class Usuario:
         self.telefono = int(input("Ingrese el numero de telefono: "))
         self.estrato = int(input("Ingrese su estrato (1-6): "))
         self.contrasena = input("Ingrese la contrasena: ")
-        self.tipo_usuario = int(input("Ingrese el tipo de usuario \n1. ADMINISTRADOR \n2. ENTRENADOR \n3. AFILIADO: "))
+        #self.tipo_usuario = int(input("Ingrese el tipo de usuario \n1. ADMINISTRADOR \n2. ENTRENADOR \n3. AFILIADO: "))
 
     def mostrar_datos(self) -> None:
         """

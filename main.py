@@ -73,11 +73,23 @@ class App():
 
     def registrar_usuario(self) -> None:
         """
-        Registra un nuevo usuario en el sistema según su tipo.
+        Registra un nuevo usuario en el sistema garantizando la jerarquía de roles.
         """
         print("\n=== Registro de Usuario ===")
-        tipo = int(input("Tipo de usuario \n1. Administrador \n2. Entrenador \n3. Afiliado: "))
 
+        # Lógica de asignación automática de roles
+        if self.cont_usuarios == 0:
+            print("¡Atención! NO hay usuarios registrados. Este primer usuario usuario será ADMINISTRADOR por defecto.")
+            tipo = Usuario.ADMINISTRADOR
+
+        elif self.usuario_autenticado != None and self.usuario_autenticado.tipo_usuario == Usuario.ADMINISTRADOR:
+            tipo = int(input("¿Qué tipo de cuenta deseas crear? \n1. Administrador \n2. Entrenador: "))
+        
+        else:
+            print("Registrando cuenta de AFILIADO por defecto...")
+            tipo = Usuario.AFILIADO
+
+        # Instanciación de la clase correcta
         if tipo == Usuario.AFILIADO:
             usu = Afiliado()
         elif tipo == Usuario.ENTRENADOR:
@@ -86,6 +98,8 @@ class App():
             usu = Usuario()
 
         usu.pedir_datos()
+        usu.tipo_usuario = tipo
+        
         self.usuarios[self.cont_usuarios] = usu
         self.cont_usuarios += 1
 
